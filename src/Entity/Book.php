@@ -25,7 +25,7 @@ class Book
     private $title;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="integer")
      */
     private $publication_year;
 
@@ -35,7 +35,7 @@ class Book
     private $number_of_pages;
 
     /**
-     * @ORM\Column(type="string", length=190)
+     * @ORM\Column(type="string", length=190, unique=true)
      */
     private $isbn_code;
 
@@ -78,12 +78,12 @@ class Book
         return $this;
     }
 
-    public function getPublicationYear(): ?\DateTimeInterface
+    public function getPublicationYear(): ?int
     {
         return $this->publication_year;
     }
 
-    public function setPublicationYear(\DateTimeInterface $publication_year): self
+    public function setPublicationYear(int $publication_year): self
     {
         $this->publication_year = $publication_year;
 

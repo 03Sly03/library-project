@@ -83,33 +83,80 @@ class AppFixtures extends Fixture
         $manager->persist($author);
 
         $authors[] = $author;
+
+        for ($i = 1; $i < $count; $i++) {
+            $author = new author();
+            $author->setFirstname($this->faker->firstname());
+            $author->setLastname($this->faker->lastname());
+    
+            $manager->persist($author);
+    
+            $authors[] = $author;
+        }
     
         return $authors;
 
     }
 
-    
-
-    public function loadBooks(ObjectManager $manager, array $authors, array $types)
+    public function loadBooks(ObjectManager $manager, array $authors, array $types, int $count)
     {
         $books = [];
+        $isbnList = [];
+        $authorIndexList = [];
 
         $authorIndex = 0;
 
         $author = $authors[$authorIndex];
 
         $book = new Book();
-
         $book->setTitle('Le village');
-        $book->setPublicationYear($this->faker->dateTimeThisCentury());
-        $book->setNumberOfPages(155);
-        $book->setIsbnCode('45ert486');
+        $book->setPublicationYear($this->faker->numberBetween($min = 1800, $max = 2021));
+        $book->setNumberOfPages($this->faker->numberBetween($min = 50, $max = 600));
+        $isbnC = $this->faker->numberBetween($min = 4589457823158, $max = 4589557823158);
+        $book->setIsbnCode(strval($isbnC));
         $book->setAuthor($author);
         $book->addType($types[0]);
         
         $manager->persist($book);
 
         $books[] = $book;
+        
+        $newIsbnC = $isbnC;
+        
+        for ($i = 1; $i < $count; $i++) {
+            $lastIsbnC = $newIsbnC;
+            array_push($isbnList, $lastIsbnC);
+            $newIsbnC = $this->faker->numberBetween($min = 4589457823158, $max = 4589557823158);
+            while(in_array($newIsbnC, $isbnList, true)) {
+                $newIsbnC = $this->faker->numberBetween($min = 4589457823158, $max = 4589557823158);
+            };
+
+            $book = new Book();
+            $book->setTitle($this->faker->realText($maxNbChars = 20, $indexSize = 2));
+            $book->setPublicationYear($this->faker->numberBetween($min = 1800, $max = 2021));
+            $book->setNumberOfPages($this->faker->numberBetween($min = 50, $max = 600));
+            $book->setIsbnCode(strval($newIsbnC));
+
+            $newAuthorIndex = $authorIndex;
+            array_push($authorIndexList, $newAuthorIndex);
+            $newAuthorIndex = $this->faker->numberBetween($min = 0, $max = 500);
+            while(in_array($newAuthorIndex, $authorIndexList, true) && count($authorIndexList) != 500) {
+                $newAuthorIndex = $this->faker->numberBetween($min = 0, $max = 500);
+            }
+            if (count($authorIndexList) >= 500) {
+                $newAuthorIndex = $this->faker->numberBetween($min = 0, $max = 500);
+            }
+            $author = $authors[$newAuthorIndex];
+            $book->setAuthor($author);
+
+
+
+            $book->addType($types[0]);
+            
+            $manager->persist($book);
+
+            $books[] = $book;
+        }
 
         return $books;
     }
@@ -120,14 +167,14 @@ class AppFixtures extends Fixture
 
         $user = new User();
         $user->setEmail('user1@example.com');
-        $password = $this->encoder->encodePassword($user, '456');
+        $password = $this->encoder->encodePassword($user, '123');
         $user->setPassword($password);
         $user->setRoles(['ROLE_BORROWER']);
 
         $borrower = new Borrower();
         $borrower->setFirstname('John');
         $borrower->setLastname('Doe');
-        $borrower->setPhone('0685421549');
+        $borrower->setPhone('0685421549'); // $borrower->setPhone($this->faker->phoneNumber()); ou https://github.com/fzaninotto/Faker#fakerproviderro_rophonenumber
         $borrower->setActive(true);
         $borrower->setCreationDate($this->faker->dateTimeThisDecade());
         $creationDate = $borrower->getCreationDate();
@@ -139,7 +186,7 @@ class AppFixtures extends Fixture
 
         $user = new User();
         $user->setEmail('user2@example.com');
-        $password = $this->encoder->encodePassword($user, '456');
+        $password = $this->encoder->encodePassword($user, '123');
         $user->setPassword($password);
         $user->setRoles(['ROLE_BORROWER']);
 
@@ -158,7 +205,7 @@ class AppFixtures extends Fixture
 
         $user = new User();
         $user->setEmail('user3@example.com');
-        $password = $this->encoder->encodePassword($user, '456');
+        $password = $this->encoder->encodePassword($user, '123');
         $user->setPassword($password);
         $user->setRoles(['ROLE_BORROWER']);
 
@@ -181,7 +228,7 @@ class AppFixtures extends Fixture
 
             $user = new User();
             $user->setEmail($this->faker->email());
-            $password = $this->encoder->encodePassword($user, '456');
+            $password = $this->encoder->encodePassword($user, '123');
             $user->setPassword($password);
             $user->setRoles(['ROLE_BORROWER']);
     
@@ -190,9 +237,9 @@ class AppFixtures extends Fixture
             $borrower = new Borrower();
             $borrower->setFirstname($this->faker->firstname());
             $borrower->setLastname($this->faker->lastname());
-            $borrower->setPhone('0789564122');
+            $borrower->setPhone($this->faker->phoneNumber());
             $borrower->setActive($this->faker->boolean());
-            $borrower->setCreationDate($this->faker->dateTimeThisDecade());
+            $borrower->setCreationDate($this->faker->dateTimeThisYear());
             $creationDate = $borrower->getCreationDate();
             $borrower->setUser($user);
 
