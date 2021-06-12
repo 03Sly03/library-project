@@ -29,11 +29,13 @@ class Loan
 
     /**
      * @ORM\ManyToOne(targetEntity=Borrower::class, inversedBy="loans")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $borrower;
 
     /**
      * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="loans")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $book;
 

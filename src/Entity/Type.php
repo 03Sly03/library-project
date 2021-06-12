@@ -30,7 +30,7 @@ class Type
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Book::class, inversedBy="types")
+     * @ORM\ManyToMany(targetEntity=Book::class, mappedBy="types")
      */
     private $books;
 
@@ -80,6 +80,7 @@ class Type
     {
         if (!$this->books->contains($book)) {
             $this->books[] = $book;
+            $book->addType($this);
         }
 
         return $this;

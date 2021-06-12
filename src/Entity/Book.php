@@ -51,7 +51,7 @@ class Book
     private $loans;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Type::class, mappedBy="books")
+     * @ORM\ManyToMany(targetEntity=Type::class, inversedBy="books")
      */
     private $types;
 
@@ -168,7 +168,6 @@ class Book
     {
         if (!$this->types->contains($type)) {
             $this->types[] = $type;
-            $type->addBook($this);
         }
 
         return $this;

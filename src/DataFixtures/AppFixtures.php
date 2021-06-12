@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+// use App\Entity\type_book;
+use App\Entity\Type;
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Borrower;
@@ -14,8 +16,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+
     private $encoder;
     private $faker;
+
 
     public function __construct(UserPasswordEncoderInterface $encoder)
     {
@@ -31,13 +35,11 @@ class AppFixtures extends Fixture
         $numberOfAuthors = 500;
 
         $this->loadAdmin($manager);
+        $types = $this->loadTypes($manager);
         $borrowers = $this->loadBorrowers($manager, $borrowersCount);
-        $loans = $this->loadLoans($manager, $borrowers, $loansCount);
         $authors = $this->loadAuthors($manager, $numberOfAuthors);
-        $books = $this->loadBooks($manager, $authors, $numberOfBooks);
-
-        // $product = new Product();
-        // $manager->persist($product);
+        $books = $this->loadBooks($manager, $authors, $types, $numberOfBooks);
+        $loans = $this->loadLoans($manager, $borrowers, $books, $loansCount);
 
         $manager->flush();
     }
@@ -53,6 +55,22 @@ class AppFixtures extends Fixture
         $manager->persist($user);
     }
 
+    public function loadTypes(ObjectManager $manager)
+    {
+        $types = [];
+
+        $type = new type();
+
+        $type->setName('Science-fiction');
+        $type->setDescription('Histoires avec plein de technologie');
+
+        $manager->persist($type);
+
+        $types[] = $type;
+    
+        return $types;
+
+    }
 
     public function loadAuthors(ObjectManager $manager, int $count)
     {
@@ -72,7 +90,7 @@ class AppFixtures extends Fixture
 
     
 
-    public function loadBooks(ObjectManager $manager, array $authors)
+    public function loadBooks(ObjectManager $manager, array $authors, array $types)
     {
         $books = [];
 
@@ -81,18 +99,19 @@ class AppFixtures extends Fixture
         $author = $authors[$authorIndex];
 
         $book = new Book();
+
         $book->setTitle('Le village');
         $book->setPublicationYear($this->faker->dateTimeThisCentury());
-        
-        // $publicationYear = \DateTime::createFromFormat('Y', '1950');
-        // $book->setPublicationYear($publicationYear);
         $book->setNumberOfPages(155);
         $book->setIsbnCode('45ert486');
         $book->setAuthor($author);
-
+        $book->addType($types[0]);
+        
         $manager->persist($book);
 
         $books[] = $book;
+
+        return $books;
     }
 
     public function loadBorrowers(ObjectManager $manager, int $count)
@@ -184,10 +203,15 @@ class AppFixtures extends Fixture
         return $borrowers;
     }    
 
-    public function loadLoans(ObjectManager $manager, array $borrowers)
+    public function loadLoans(ObjectManager $manager, array $borrowers, array $books)
     {
-        $borrowerIndex = 0;
         $loans = [];
+
+        $borrowerIndex = 0;
+        $bookIndex = 0;
+
+        $borrower = $borrowers[$borrowerIndex];
+        $book = $books[$bookIndex];
 
         $loan = new Loan();
         $loan->setBorrowingDate($this->faker->dateTimeThisDecade());
@@ -195,9 +219,13 @@ class AppFixtures extends Fixture
         $returnDate = \DateTime::createFromFormat('Y-m-d H:i:s', $borrowingDate->format('Y-m-d H:i:s'));
         $returnDate->add(new \DateInterval('P1M'));
         $loan->setReturnDate($returnDate);
+        $loan->setBorrower($borrower);
+        $loan->setBook($book);
 
         $manager->persist($loan);
 
         $loans[] = $loan;
+
+        return $loans;
     }
 }
