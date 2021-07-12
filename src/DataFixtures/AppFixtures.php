@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-// use App\Entity\type_book;
 use App\Entity\Type;
 use App\Entity\Author;
 use App\Entity\Book;
@@ -60,12 +59,68 @@ class AppFixtures extends Fixture
         $types = [];
 
         $type = new type();
-
         $type->setName('Science-fiction');
-        $type->setDescription('Histoires avec plein de technologie');
-
         $manager->persist($type);
+        $types[] = $type;
 
+        $type = new type();
+        $type->setName('poésie');
+        $manager->persist($type);
+        $types[] = $type;
+
+        $type = new type();
+        $type->setName('nouvelle');
+        $manager->persist($type);
+        $types[] = $type;
+
+        $type = new type();
+        $type->setName('roman d\'histoire');
+        $manager->persist($type);
+        $types[] = $type;
+
+        $type = new type();
+        $type->setName('roman d\'amour');
+        $manager->persist($type);
+        $types[] = $type;
+
+        $type = new type();
+        $type->setName('rman d\'aventure');
+        $manager->persist($type);
+        $types[] = $type;
+
+        $type = new type();
+        $type->setName('fantasy');
+        $manager->persist($type);
+        $types[] = $type;
+
+        $type = new type();
+        $type->setName('biographie');
+        $manager->persist($type);
+        $types[] = $type;
+
+        $type = new type();
+        $type->setName('conte');
+        $manager->persist($type);
+        $types[] = $type;
+
+        $type = new type();
+        $type->setName('témoignage');
+        $manager->persist($type);
+        $types[] = $type;
+
+        $type = new type();
+        $type->setName('théâtre');
+        $manager->persist($type);
+        $types[] = $type;
+
+        $type = new type();
+        $type->setName('essai');
+        $manager->persist($type);
+        $types[] = $type;
+
+        $type = new type();
+        $type->setName('journal intime');
+        $manager->persist($type);
         $types[] = $type;
     
         return $types;
@@ -105,8 +160,9 @@ class AppFixtures extends Fixture
         $authorIndexList = [];
 
         $authorIndex = 0;
-
         $author = $authors[$authorIndex];
+
+        $typeIndex = 0;
 
         $book = new Book();
         $book->setTitle('Le village');
@@ -115,7 +171,7 @@ class AppFixtures extends Fixture
         $isbnC = $this->faker->numberBetween($min = 4589457823158, $max = 4589557823158);
         $book->setIsbnCode(strval($isbnC));
         $book->setAuthor($author);
-        $book->addType($types[0]);
+        $book->addType($types[$typeIndex]);
         
         $manager->persist($book);
 
@@ -123,35 +179,42 @@ class AppFixtures extends Fixture
         
         $newIsbnC = $isbnC;
         
+        // Ajout des données aléatoire pour les 1000 livres
         for ($i = 1; $i < $count; $i++) {
+
+            $book = new Book();
+            $book->setTitle($this->faker->realText($maxNbChars = 20, $indexSize = 2));
+            $book->setPublicationYear($this->faker->numberBetween($min = 1800, $max = 2021));
+            $book->setNumberOfPages($this->faker->numberBetween($min = 50, $max = 600));
+
+            // Ajout de l'isbn_code unique 
             $lastIsbnC = $newIsbnC;
             array_push($isbnList, $lastIsbnC);
             $newIsbnC = $this->faker->numberBetween($min = 4589457823158, $max = 4589557823158);
             while(in_array($newIsbnC, $isbnList, true)) {
                 $newIsbnC = $this->faker->numberBetween($min = 4589457823158, $max = 4589557823158);
             };
-
-            $book = new Book();
-            $book->setTitle($this->faker->realText($maxNbChars = 20, $indexSize = 2));
-            $book->setPublicationYear($this->faker->numberBetween($min = 1800, $max = 2021));
-            $book->setNumberOfPages($this->faker->numberBetween($min = 50, $max = 600));
             $book->setIsbnCode(strval($newIsbnC));
 
+            // Ajout des 500 auteurs réparti aléatoirement dans les livres en 2 étapes.
             $newAuthorIndex = $authorIndex;
             array_push($authorIndexList, $newAuthorIndex);
-            $newAuthorIndex = $this->faker->numberBetween($min = 0, $max = 500);
+            $newAuthorIndex = $this->faker->numberBetween($min = 0, $max = 499);
+            // étape 1: répartir tous les auteurs pour qu'ils soient attribué à au moins un livre.
             while(in_array($newAuthorIndex, $authorIndexList, true) && count($authorIndexList) != 500) {
-                $newAuthorIndex = $this->faker->numberBetween($min = 0, $max = 500);
+                $newAuthorIndex = $this->faker->numberBetween($min = 0, $max = 499);
             }
+            // étape 2: dès que tous les auteurs ont été réparti au moins une fois, il ne reste
+            // plus qu'a attribué au restant des livres, des auteurs aléatoirement.
             if (count($authorIndexList) >= 500) {
-                $newAuthorIndex = $this->faker->numberBetween($min = 0, $max = 500);
-            }
+                $newAuthorIndex = $this->faker->numberBetween($min = 0, $max = 499);
+            };
             $author = $authors[$newAuthorIndex];
             $book->setAuthor($author);
 
-
-
-            $book->addType($types[0]);
+            // répartition aléatoire du genre pour les 1000 livres.
+            $typeIndex = $this->faker->numberBetween($min = 0, $max = 12);
+            $book->addType($types[$typeIndex]);
             
             $manager->persist($book);
 
@@ -176,13 +239,16 @@ class AppFixtures extends Fixture
         $borrower->setLastname('Doe');
         $borrower->setPhone('0685421549'); // $borrower->setPhone($this->faker->phoneNumber()); ou https://github.com/fzaninotto/Faker#fakerproviderro_rophonenumber
         $borrower->setActive(true);
-        $borrower->setCreationDate($this->faker->dateTimeThisDecade());
+        $borrower->setCreationDate($this->faker->dateTimeThisYear());
         $creationDate = $borrower->getCreationDate();
         $borrower->setUser($user);
 
         $manager->persist($borrower);
 
         $manager->persist($user);
+
+        $borrowers[] = $borrower;
+
 
         $user = new User();
         $user->setEmail('user2@example.com');
@@ -202,6 +268,9 @@ class AppFixtures extends Fixture
         $manager->persist($borrower);
 
         $manager->persist($user);
+
+        $borrowers[] = $borrower;
+
 
         $user = new User();
         $user->setEmail('user3@example.com');
@@ -250,28 +319,138 @@ class AppFixtures extends Fixture
         return $borrowers;
     }    
 
-    public function loadLoans(ObjectManager $manager, array $borrowers, array $books)
+    public function loadLoans(ObjectManager $manager, array $borrowers, array $books, int $count)
     {
         $loans = [];
-
-        $borrowerIndex = 0;
+        // $lastBorrowingDateList = [];
+        // $bookIndexList = [];
+        
+        // 1er emprunt
+        
+       
         $bookIndex = 0;
+        $borrowerIndex = 0;
 
         $borrower = $borrowers[$borrowerIndex];
         $book = $books[$bookIndex];
 
+        $borrowerCreationDate = $borrower->getCreationDate();
+
         $loan = new Loan();
-        $loan->setBorrowingDate($this->faker->dateTimeThisDecade());
+        $loan->setBorrowingDate($this->faker->dateTimeThisYear());
         $borrowingDate = $loan->getBorrowingDate();
+        while ($borrowingDate < $borrowerCreationDate) {
+            $loan->setBorrowingDate($this->faker->dateTimeThisyear());
+            $borrowingDate = $loan->getBorrowingDate();
+        };
+        // array_push($bookIndexList, $bookIndex[$borrowingDate]);
         $returnDate = \DateTime::createFromFormat('Y-m-d H:i:s', $borrowingDate->format('Y-m-d H:i:s'));
         $returnDate->add(new \DateInterval('P1M'));
         $loan->setReturnDate($returnDate);
         $loan->setBorrower($borrower);
+
         $loan->setBook($book);
 
         $manager->persist($loan);
 
+        
         $loans[] = $loan;
+        
+
+        // $lastBorrowingDate = $borrowingDate;
+        // $lastBookIndex = $bookIndex;
+
+        // les 200 emprunts
+        // for ($i = 1; $i <= $count; $i++) {
+
+        //     $lastBorrowingDate = $borrowingDate;
+
+        //     $lastReturnDate = $returnDate;
+
+        //     $borrowingDateMonthBefore = \DateTime::createFromFormat('Y-m-d H:i:s', $lastBorrowingDate->format('Y-m-d H:i:s'));
+        //     $borrowingDateMonthBefore->sub(new \DateInterval('P30D'));
+        //     $lastBorrowingDate = $borrowingDateMonthBefore;
+        //     if ($lastBorrowingDateList.indexOf($lastBorrowingDate) == -1) {
+        //         array_push($lastBorrowingDateList, $lastBorrowingDate);
+        //     }
+
+
+        //     $bookIndex = $this->faker->numberBetween($min = 0, $max = 999);
+        //     if ($bookIndexList.indexOf($bookIndex) == -1) {
+        //         array_push($bookIndexList, $bookIndex);
+        //     }
+        //     $borrowerIndex = $this->faker->numberBetween($min = 0, $max = 102);
+
+        //     $book = $books[$bookIndex];
+        //     $borrower = $borrowers[$borrowerIndex];
+
+        //     $borrowerCreationDate = $borrower->getCreationDate();
+
+        //     $loan = new Loan();
+        //     $loan->setBorrowingDate($this->faker->dateTimeThisYear());
+        //     $borrowingDate = $loan->getBorrowingDate();
+
+        //     $returnDate = \DateTime::createFromFormat('Y-m-d H:i:s', $borrowingDate->format('Y-m-d H:i:s'));
+        //     $returnDate->add(new \DateInterval('P1M'));
+
+        //     if ($bookIndexList.indexOf(bookIndex) !== -1 && ($borrowingDate >= $lastBorrowingDate && $returnDate <= $lastReturnDate)) {
+        //         $loan->setBorrowingDate($this->faker->dateTimeThisYear());
+        //         $borrowingDate = $loan->getBorrowingDate();
+        //     };
+        //     while ($borrowingDate < $borrowerCreationDate) {
+        //         $loan->setBorrowingDate($this->faker->dateTimeThisyear());
+        //         $borrowingDate = $loan->getBorrowingDate();
+        //         if ($bookIndex === $lastBookIndex && ($borrowingDate >= $lastBorrowingDate && $returnDate <= $lastReturnDate)) {
+        //             $loan->setBorrowingDate($this->faker->dateTimeThisYear());
+        //             $borrowingDate = $loan->getBorrowingDate();
+        //         };
+        //     };
+ 
+        //     if ($bookIndexList.indexOf($bookIndex) == -1) {
+        //         array_push($bookIndexList, $bookIndex[$borrowingDate][$returnDate]);
+        //     } else {
+        //         array_push($bookIndex, $borrowingDate, $returnDate);
+        //     }
+
+        //     $loan->setReturnDate($returnDate);
+        //     $loan->setBorrower($borrower);
+
+        // }
+
+        // $loan->setBook($book);
+
+        // $manager->persist($loan);
+
+        // $loans[] = $loan;
+
+
+        for ($i = 1; $i < $count; $i++) {
+            $borrowerIndex = $this->faker->numberBetween($min = 0, $max = 102); 
+            $borrower = $borrowers[$borrowerIndex];
+            
+            $bookIndex = $this->faker->numberBetween($min = 0, $max = 999);
+            $book = $books[$bookIndex];
+
+            $borrowerCreationDate = $borrower->getCreationDate();
+
+            $loan = new Loan();
+            $loan->setBorrowingDate($this->faker->dateTimeThisDecade());
+            $borrowingDate = $loan->getBorrowingDate();
+            while ($borrowingDate < $borrowerCreationDate) {
+                $loan->setBorrowingDate($this->faker->dateTimeThisyear());
+                $borrowingDate = $loan->getBorrowingDate();
+            };
+            $returnDate = \DateTime::createFromFormat('Y-m-d H:i:s', $borrowingDate->format('Y-m-d H:i:s'));
+            $returnDate->add(new \DateInterval('P1M'));
+            $loan->setReturnDate($returnDate);
+
+            $loan->setBorrower($borrower);
+            $loan->setBook($book);
+
+            $manager->persist($loan);
+
+            $loans[] = $loan;
+        }
 
         return $loans;
     }
