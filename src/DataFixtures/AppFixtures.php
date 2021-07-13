@@ -237,7 +237,7 @@ class AppFixtures extends Fixture
         $borrower = new Borrower();
         $borrower->setFirstname('John');
         $borrower->setLastname('Doe');
-        $borrower->setPhone('0685421549'); // $borrower->setPhone($this->faker->phoneNumber()); ou https://github.com/fzaninotto/Faker#fakerproviderro_rophonenumber
+        $borrower->setPhone('0685421549');
         $borrower->setActive(true);
         $borrower->setCreationDate($this->faker->dateTimeThisYear());
         $creationDate = $borrower->getCreationDate();
@@ -321,12 +321,7 @@ class AppFixtures extends Fixture
 
     public function loadLoans(ObjectManager $manager, array $borrowers, array $books, int $count)
     {
-        $loans = [];
-        // $lastBorrowingDateList = [];
-        // $bookIndexList = [];
-        
-        // 1er emprunt
-        
+        $loans = [];        
        
         $bookIndex = 0;
         $borrowerIndex = 0;
@@ -343,7 +338,6 @@ class AppFixtures extends Fixture
             $loan->setBorrowingDate($this->faker->dateTimeThisyear());
             $borrowingDate = $loan->getBorrowingDate();
         };
-        // array_push($bookIndexList, $bookIndex[$borrowingDate]);
         $returnDate = \DateTime::createFromFormat('Y-m-d H:i:s', $borrowingDate->format('Y-m-d H:i:s'));
         $returnDate->add(new \DateInterval('P1M'));
         $loan->setReturnDate($returnDate);
@@ -355,74 +349,6 @@ class AppFixtures extends Fixture
 
         
         $loans[] = $loan;
-        
-
-        // $lastBorrowingDate = $borrowingDate;
-        // $lastBookIndex = $bookIndex;
-
-        // les 200 emprunts
-        // for ($i = 1; $i <= $count; $i++) {
-
-        //     $lastBorrowingDate = $borrowingDate;
-
-        //     $lastReturnDate = $returnDate;
-
-        //     $borrowingDateMonthBefore = \DateTime::createFromFormat('Y-m-d H:i:s', $lastBorrowingDate->format('Y-m-d H:i:s'));
-        //     $borrowingDateMonthBefore->sub(new \DateInterval('P30D'));
-        //     $lastBorrowingDate = $borrowingDateMonthBefore;
-        //     if ($lastBorrowingDateList.indexOf($lastBorrowingDate) == -1) {
-        //         array_push($lastBorrowingDateList, $lastBorrowingDate);
-        //     }
-
-
-        //     $bookIndex = $this->faker->numberBetween($min = 0, $max = 999);
-        //     if ($bookIndexList.indexOf($bookIndex) == -1) {
-        //         array_push($bookIndexList, $bookIndex);
-        //     }
-        //     $borrowerIndex = $this->faker->numberBetween($min = 0, $max = 102);
-
-        //     $book = $books[$bookIndex];
-        //     $borrower = $borrowers[$borrowerIndex];
-
-        //     $borrowerCreationDate = $borrower->getCreationDate();
-
-        //     $loan = new Loan();
-        //     $loan->setBorrowingDate($this->faker->dateTimeThisYear());
-        //     $borrowingDate = $loan->getBorrowingDate();
-
-        //     $returnDate = \DateTime::createFromFormat('Y-m-d H:i:s', $borrowingDate->format('Y-m-d H:i:s'));
-        //     $returnDate->add(new \DateInterval('P1M'));
-
-        //     if ($bookIndexList.indexOf(bookIndex) !== -1 && ($borrowingDate >= $lastBorrowingDate && $returnDate <= $lastReturnDate)) {
-        //         $loan->setBorrowingDate($this->faker->dateTimeThisYear());
-        //         $borrowingDate = $loan->getBorrowingDate();
-        //     };
-        //     while ($borrowingDate < $borrowerCreationDate) {
-        //         $loan->setBorrowingDate($this->faker->dateTimeThisyear());
-        //         $borrowingDate = $loan->getBorrowingDate();
-        //         if ($bookIndex === $lastBookIndex && ($borrowingDate >= $lastBorrowingDate && $returnDate <= $lastReturnDate)) {
-        //             $loan->setBorrowingDate($this->faker->dateTimeThisYear());
-        //             $borrowingDate = $loan->getBorrowingDate();
-        //         };
-        //     };
- 
-        //     if ($bookIndexList.indexOf($bookIndex) == -1) {
-        //         array_push($bookIndexList, $bookIndex[$borrowingDate][$returnDate]);
-        //     } else {
-        //         array_push($bookIndex, $borrowingDate, $returnDate);
-        //     }
-
-        //     $loan->setReturnDate($returnDate);
-        //     $loan->setBorrower($borrower);
-
-        // }
-
-        // $loan->setBook($book);
-
-        // $manager->persist($loan);
-
-        // $loans[] = $loan;
-
 
         for ($i = 1; $i < $count; $i++) {
             $borrowerIndex = $this->faker->numberBetween($min = 0, $max = 102); 
