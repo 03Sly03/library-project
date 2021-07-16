@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Book;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,27 +15,55 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class BookRepository extends ServiceEntityRepository
 {
+
+    use ProfileRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Book::class);
     }
 
-    // /**
-    //  * @return Book[] Returns an array of Book objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Book[] Returns an array of Book objects
+     */
+    
+    public function findByTheTitle($value)
+    {
+        $qb = $this->createQueryBuilder('b');
+
+        return $qb->where($qb->expr()->like('b.title', ':value'))
+        ->setParameter('value', "%{$value}%")
+        ->orderBy('b.title', 'ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+
+    /**
+     * @return Book[] Returns an array of Type objects
+     */
+    
+    public function findByTheType(string $theType)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
+            ->innerJoin('b.types', 't')
+            ->andWhere('t.name LIKE :theType')
+            ->setParameter('theType', "%{$theType}%")
+            ->orderBy('b.title', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
+    //     return $this->createQueryBuilder('b')
+    //         ->andWhere('b.theTitle = :val')
+    //         ->setParameter('val', {$value})
+    //         ->orderBy('b.title', 'ASC')
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
+    
 
     /*
     public function findOneBySomeField($value): ?Book

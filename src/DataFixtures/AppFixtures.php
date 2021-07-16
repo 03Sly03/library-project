@@ -49,7 +49,7 @@ class AppFixtures extends Fixture
         $user->setEmail('admin@example.com');
         $password = $this->encoder->encodePassword($user, '123');
         $user->setPassword($password);
-        $user->setRoles(['ROLE_ADMIN']);
+        $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
 
         $manager->persist($user);
     }
@@ -232,7 +232,7 @@ class AppFixtures extends Fixture
         $user->setEmail('user1@example.com');
         $password = $this->encoder->encodePassword($user, '123');
         $user->setPassword($password);
-        $user->setRoles(['ROLE_BORROWER']);
+        $user->setRoles(['ROLE_USER', 'ROLE_BORROWER']);
 
         $borrower = new Borrower();
         $borrower->setFirstname('John');
@@ -254,7 +254,7 @@ class AppFixtures extends Fixture
         $user->setEmail('user2@example.com');
         $password = $this->encoder->encodePassword($user, '123');
         $user->setPassword($password);
-        $user->setRoles(['ROLE_BORROWER']);
+        $user->setRoles(['ROLE_USER', 'ROLE_BORROWER']);
 
         $borrower = new Borrower();
         $borrower->setFirstname('Marcus');
@@ -276,7 +276,7 @@ class AppFixtures extends Fixture
         $user->setEmail('user3@example.com');
         $password = $this->encoder->encodePassword($user, '123');
         $user->setPassword($password);
-        $user->setRoles(['ROLE_BORROWER']);
+        $user->setRoles(['ROLE_USER', 'ROLE_BORROWER']);
 
         $manager->persist($user);
 
@@ -299,7 +299,7 @@ class AppFixtures extends Fixture
             $user->setEmail($this->faker->email());
             $password = $this->encoder->encodePassword($user, '123');
             $user->setPassword($password);
-            $user->setRoles(['ROLE_BORROWER']);
+            $user->setRoles(['ROLE_USER', 'ROLE_BORROWER']);
     
             $manager->persist($user);
 

@@ -1,3 +1,10 @@
+# Pour le TestController
+
+Il faut installer:
+    - composer install
+    - composer require symfony/webpack-encore-bundle
+    - npm run build
+
 # Project library
 
 Cette application à pour but de gérer une liste d'abonnés qui veulent emprunter des livres d'auteurs.
