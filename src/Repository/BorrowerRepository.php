@@ -39,25 +39,11 @@ class BorrowerRepository extends ServiceEntityRepository
      */
     public function findByActive(string $isActive)
     {
-        // Cette requête génère le code DQL suivant :
-        // "SELECT u FROM App\Entity\User u WHERE u.roles LIKE :role ORDER BY u.email ASC"
-        // 'u' sera l'alias qui permet de désigner un user.
         return $this->createQueryBuilder('b')
-            // Ajout d'un filtre qui ne retient que les users
-            // qui contiennent (opérateur LIKE) la chaîne de
-            // caractères contenue dans la variable :role.
             ->andWhere('b.active = :isActive')
-            // Affactation d'une valeur à la variable :role.
-            // Le symbole % est joker qui veut dire
-            // « match toutes les chaînes de caractères ».
             ->setParameter('isActive', "%{$isActive}%")
-            // Tri par adresse email en ordre croissant (a, b, c, ...).
             ->orderBy('b.lastname', 'ASC')
-            // Récupération d'une requête qui n'attend qu'à être exécutée.
             ->getQuery()
-            // Exécution de la requête.
-            // Récupération d'un tableau de résultat.
-            // Ce tableau peut contenir, zéro, un ou plusieurs lignes.
             ->getResult()
         ;
     }
@@ -69,8 +55,8 @@ class BorrowerRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('b')
             ->andWhere('b.creation_date < :date')
-            ->setParameter('date', "%{$date}%")
-            ->orderBy('b.lastname', 'ASC')
+            ->setParameter('date', "{$date}")
+            ->orderBy('b.creation_date', 'ASC')
             ->getQuery()
             ->getResult()
         ;

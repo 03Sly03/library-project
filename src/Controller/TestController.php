@@ -152,11 +152,10 @@ class TestController extends AbstractController
         dump($numbSearch);
 
         // La liste des emprunteurs dont la date de création est antérieure au 01/03/2021 exclu (c-à-d strictement plus petit)
-        $date = '2021-03-01';
+        $date = '2021-03-01 00:00:00';
+        dump($date);
         $dateSearch = $borrowerRepository->findByCreationDate($date);
         dump($dateSearch);
-        exit();
-
 
         // La liste des emprunteurs inactifs (c-à-d dont l'attribut `actif` est égal à `false`)
         $isActive = false;
@@ -176,17 +175,21 @@ class TestController extends AbstractController
         $loans = $loanRepository->findByBorrowerId(2);
         dump($loans);
 
-        // La liste des emprunts du livre dont l'id est `3`
-        $loans = $loanRepository->findByBookId(3);
+        // La liste des emprunts du livre dont l'id est `10`
+        $loans = $loanRepository->findByBookId(10);
         dump($loans);
 
-        // La liste des emprunts qui ont été retournés avant le 01/01/2022
-        $date = '2022-01-01';
+        // La liste des emprunts qui ont été retournés avant le 01/01/2021
+        $date = '2021-07-16 00:00:00';
         $bookReturned = $loanRepository->findByReturnDate($date);
         dump($bookReturned);
 
         // La liste des emprunts qui n'ont pas encore été retournés (c-à-d dont la date de retour est nulle)
-
+        /*
+        $isReturned = null;
+        $isNotReturned = $loanRepository->findByNull($isRetruned);
+        dump($isNotReturned);
+        */
         // Les données de l'emprunt du livre dont l'id est `3` et qui n'a pas encore été retournés (c-à-d dont la date de retour est nulle)
 
         exit();

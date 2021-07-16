@@ -103,13 +103,14 @@ Requêtes de lecture :
 Requêtes de lecture :
 
     - la liste des 10 derniers emprunts au niveau chronologique
-
+    DONE
     - la liste des emprunts de l'emprunteur dont l'id est `2`
-
+    DONE
     - la liste des emprunts du livre dont l'id est `3`
-
+    DONE
     - la liste des emprunts qui ont été retournés avant le 01/01/2021
-
+    DONE
     - la liste des emprunts qui n'ont pas encore été retournés (c-à-d dont la date de retour est nulle)
-
+!!! PAS DE DONNEES NULL POUR LES DATES DE RETOUR !!!
     - les données de l'emprunt du livre dont l'id est `3` et qui n'a pas encore été retournés (c-à-d dont la date de retour est nulle)
+!!! PAS DE DONNEES NULL POUR LES DATES DE RETOUR !!!
