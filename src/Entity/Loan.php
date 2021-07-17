@@ -23,7 +23,7 @@ class Loan
     private $borrowing_date;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $return_date;
 

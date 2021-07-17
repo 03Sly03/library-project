@@ -338,9 +338,10 @@ class AppFixtures extends Fixture
             $loan->setBorrowingDate($this->faker->dateTimeThisyear());
             $borrowingDate = $loan->getBorrowingDate();
         };
-        $returnDate = \DateTime::createFromFormat('Y-m-d H:i:s', $borrowingDate->format('Y-m-d H:i:s'));
-        $returnDate->add(new \DateInterval('P1M'));
-        $loan->setReturnDate($returnDate);
+        $returnDate = null;
+        // \DateTime::createFromFormat('Y-m-d H:i:s', $borrowingDate->format('Y-m-d H:i:s'));
+        // $returnDate->add(new \DateInterval('P1M'));
+        // $loan->setReturnDate($returnDate);
         $loan->setBorrower($borrower);
 
         $loan->setBook($book);

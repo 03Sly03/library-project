@@ -1,9 +1,23 @@
+## Procédure à suivre pour faire les tests avec TestController
+
+
+### Installer les dépendances
+    - composer install
+
+
+### Lancer le serveur Web via le terminal
+    - symfony serve
+
+
+### Ouvrir l'url via le navigateur
+    - http://127.0.0.1:8000/test
+
+
+
 ## Les requêtes
 
 
-
 ### Les utilisateurs
-
 
 Requêtes de lecture :
 
@@ -13,16 +27,14 @@ Requêtes de lecture :
     - les données de l'utilisateur dont l'id est `1`
     DONE
 
-    - les données de l'utilisateur dont l'email est `foo.foo@example.com`
+    - les données de l'utilisateur dont l'email est `user1@example.com`
     DONE
 
-    - les données des utilisateurs dont l'attribut `roles` contient le mot clé `ROLE_EMRUNTEUR`
+    - les données des utilisateurs dont l'attribut `roles` contient le mot clé `ROLE_BORROWER`
     DONE
-
 
 
 ### Les livres
-
 
 Requêtes de lecture :
 
@@ -74,9 +86,7 @@ Requêtes de suppression :
     DONE
 
 
-
 ### Les emprunteurs
-
 
 Requêtes de lecture :
 
@@ -96,9 +106,7 @@ Requêtes de lecture :
     DONE
 
 
-
 ### Les emprunts
-
 
 Requêtes de lecture :
 
@@ -111,6 +119,34 @@ Requêtes de lecture :
     - la liste des emprunts qui ont été retournés avant le 01/01/2021
     DONE
     - la liste des emprunts qui n'ont pas encore été retournés (c-à-d dont la date de retour est nulle)
-!!! PAS DE DONNEES NULL POUR LES DATES DE RETOUR !!!
+    DONE
     - les données de l'emprunt du livre dont l'id est `3` et qui n'a pas encore été retournés (c-à-d dont la date de retour est nulle)
-!!! PAS DE DONNEES NULL POUR LES DATES DE RETOUR !!!
+    DONE
+
+
+Requêtes de création :
+
+    - ajouter un nouvel emprunt
+    DONE
+    - date d'emprunt : 01/12/2020 à 16h00
+    DONE
+    - date de retour : aucune date
+    DONE
+    - emprunteur : foo foo (id `1`)
+    DONE
+    - livre : Lorem ipsum dolor sit amet (id `1`)
+    DONE
+
+
+Requêtes de mise à jour :
+
+    - modifier l'emprunt dont l'id est `3`
+    DONE
+    - date de retour : 01/05/2020 à 10h00
+    DONE
+
+
+Requêtes de suppression :
+
+    - supprimer l'emprunt dont l'id est `42`
+    DONE
