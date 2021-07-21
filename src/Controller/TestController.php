@@ -32,7 +32,12 @@ class TestController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
 
-
+        $books = $bookRepository->findAll();
+        foreach($books as $book) {
+        $isBook = $book->getTypes();
+        dump($isBook);
+        exit();
+        }
 
         // LES UTILISATEURS 
         // >>> Requêtes de lecture :
@@ -190,7 +195,7 @@ class TestController extends AbstractController
         $loanNull = $loanRepository->findAll();
         foreach($loanNull as $returnDateNull) {
             $isNull = $returnDateNull->getReturnDate();
-            if ($isNull === null){
+            if ($isNull == null){
                 dump($returnDateNull);
             }
         }

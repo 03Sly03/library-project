@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book index{% endblock %}
+
+{% block body %}
+    <h1>Book index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Test type</th>
+                <th>Type</th>
+                <th>Publication_year</th>
+                <th>Number_of_pages</th>
+                <th>Isbn_code</th>
+                <th>Availability</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td><a href="{{ path('book_show', {'id': book.id}) }}">{{ book.title }}</a></td>
+                <td>{{ book.author.firstname }} {{ book.author.firstname }}</td>
+
+                {% for type in book.types %}
+                    <td>{{ type.name }}</td>
+                {% endfor %}
+
+                    <td>{{ book.returnTypes }}</td>
+
+                <td>{{ book.publicationYear }}</td>
+                <td>{{ book.numberOfPages }}</td>
+                <td>{{ book.isbnCode }}</td>
+                    {% if book.isAvailable %}
+                        <td>Le livre est disponible</td>
+                    {% else %}
+                        <td>Le livre n'est pas disponible</td>
+                    {% endif %}
+                <td>
+                    <a href="{{ path('book_edit', {'id': book.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('book_new') }}">Create new</a>
+{% endblock %}

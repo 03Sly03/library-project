@@ -26,7 +26,7 @@ class BookRepository extends ServiceEntityRepository
     /**
      * @return Book[] Returns an array of Book objects
      */
-    
+
     public function findByTheTitle($value)
     {
         $qb = $this->createQueryBuilder('b');
