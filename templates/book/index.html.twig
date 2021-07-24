@@ -17,7 +17,9 @@
                 <th>Number_of_pages</th>
                 <th>Isbn_code</th>
                 <th>Availability</th>
+                {% if is_granted('ROLE_ADMIN') %}
                 <th>actions</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -41,9 +43,11 @@
                     {% else %}
                         <td>Le livre n'est pas disponible</td>
                     {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
                 <td>
                     <a href="{{ path('book_edit', {'id': book.id}) }}">edit</a>
                 </td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>
@@ -52,6 +56,7 @@
         {% endfor %}
         </tbody>
     </table>
-
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('book_new') }}">Create new</a>
+    {% endif %}
 {% endblock %}

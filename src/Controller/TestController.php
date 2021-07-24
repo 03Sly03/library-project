@@ -31,13 +31,44 @@ class TestController extends AbstractController
         UserRepository $userRepository): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-
-        $books = $bookRepository->findAll();
-        foreach($books as $book) {
-        $isBook = $book->getTypes();
-        dump($isBook);
-        exit();
+        
+        // $someTypes = $typeRepository->findAll();
+        // dump($someTypes);
+        // foreach ($someTypes as $type) {
+        //     $types[] = $type;
+        // }
+        // dump($types);
+        // exit();
+        $borrower = $borrowerRepository->find(1);
+        dump($borrower);
+        $user = $borrower->getUser();
+        dump($user);
+        $borrower = $borrowerRepository->findOneByUser($user);
+        dump($borrower);
+        $loans = $borrower->getLoans();
+        dump($loans);
+        foreach($loans as $oneLoan){
+            $loanArray[] = $oneLoan;
+            dump($loanArray);
         }
+        dump($loanArray);
+        // $loans = [$loan];
+        // dump($loans);
+        
+        $user = $this->getUser();
+        dump($user);
+        $borrower = $borrowerRepository->findOneByUser($user);
+        dump($borrower);
+        $loans = $borrower->getLoans();
+        dump($loans);
+        foreach($loans as $oneLoan){
+            $loan = $oneLoan;
+        }
+        dump($loan);
+        $borrower = $loan->getBorrower();
+        dump($borrower);
+        exit();
+        
 
         // LES UTILISATEURS 
         // >>> Requêtes de lecture :

@@ -22,7 +22,10 @@
                 <td>{{ author.lastname }}</td>
                 <td>
                     <a href="{{ path('author_show', {'id': author.id}) }}">show</a>
+                    {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('author_edit', {'id': author.id}) }}">edit</a>
+                    {% endif %}
+                
                 </td>
             </tr>
         {% else %}
@@ -32,6 +35,9 @@
         {% endfor %}
         </tbody>
     </table>
-
+    
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('author_new') }}">Create new</a>
+    {% endif %}
+
 {% endblock %}

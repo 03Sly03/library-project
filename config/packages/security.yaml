@@ -38,3 +38,25 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+    - { path: ^/user, roles: [ROLE_ADMIN] }
+
+    - { path: "^/borrower/[0-9]+/edit", roles: [ROLE_ADMIN] }
+    - { path: "^/borrower/[0-9]+/?$", roles: [ROLE_ADMIN, ROLE_BORROWER] }
+    - { path: "^/borrower/new", roles: [ROLE_ADMIN] }
+    - { path: ^/borrower, roles: [ROLE_ADMIN] }
+
+    - { path: "^/loan/[0-9]+/edit", roles: [ROLE_ADMIN] }
+    - { path: "^/loan/[0-9]+/?$", roles: [ROLE_ADMIN, ROLE_BORROWER] }
+    - { path: "^/loan/new", roles: [ROLE_ADMIN] }
+    - { path: ^/loan, roles: [ROLE_ADMIN, ROLE_BORROWER] }
+
+    - { path: "^/author/new", roles: [ROLE_ADMIN] }
+    - { path: "^/author/[0-9]+/edit", roles: [ROLE_ADMIN] }
+
+    - { path: "^/book/new", roles: [ROLE_ADMIN] }
+    - { path: "^/book/[0-9]+/edit", roles: [ROLE_ADMIN] }
+
+
+
+
+

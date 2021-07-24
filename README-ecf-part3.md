@@ -50,9 +50,9 @@ A générer avec code twig
 
 - la page liste des genres          >>> type Index -> CRUD DONE
 
-- la page liste des emprunteurs     >>> borrower Index
+- la page liste des emprunteurs     >>> borrower Index -> CRUD DONE
 
-- la page liste des emprunts        >>> loan Index
+- la page liste des emprunts        >>> loan Index -> CRUD DONE
 
 
 ### Page d'accueil
@@ -117,7 +117,7 @@ DONE
 Les messages d'erreur doivent respecter les règles de sécurité.
 DONE
 Une authentification réussie doit rediriger l'utilisateur vers la page liste des emprunts.
-
+DONE
 
 
 - formulaire :
@@ -149,11 +149,11 @@ Dans es pages CRUD des emprunts :
 
 
 - la page liste des emprunts est accessibles par tout utilisateur authentifié (`ROLE_ADMIN` ou `ROLE_EMRUNTEUR`)
-
+DONE
 - la page détail d'un emprunt est accessible par tout utilisateur authentifié (`ROLE_ADMIN` ou `ROLE_EMRUNTEUR`)
-
+DONE
 - les autres pages (création, modification, suppression) ne sont accessibles que par les admins (`ROLE_ADMIN`)
-
+DONE
 
 
 Dans la page liste des emprunts :
@@ -161,18 +161,18 @@ Dans la page liste des emprunts :
 
 
 - si l'utilisateur est un admin (`ROLE_ADMIN`), on peut afficher tous les emprunts
-
+DONE
 - si l'utilisateur est un emprunteur (`ROLE_EMRUNTEUR`), on ne doit afficher que ses emprunts
-
+DONE
 
 
 Dans la page détails d'un emprunt :
 
 
-
 - si l'utilisateur est un admin (`ROLE_ADMIN`), il a accès à tous les emprunts
-
+DONE
 - si l'utilisateur est un emprunteur (`ROLE_EMRUNTEUR`) et qu'il essaie d'afficher un emprunt qui n'est pas à lui, il faut renvoyer une erreur `404 NOT FOUND`
+DONE
 
 
 
@@ -223,15 +223,15 @@ Ces pages doivent permettre de gérer :
 
 
 - des utilisateurs (de la table `user`)
-
+DONE
 - des livres
-
+DONE
 - des auteurs
-
+DONE
 - des genres
-
+DONE
 - des emprunteurs
-
+DONE
 
 
 - les pages de type CRUD des livres :
