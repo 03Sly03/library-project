@@ -108,7 +108,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $user = $token->getUser();
 
         if (in_array('ROLE_ADMIN', $user->getRoles())) {
-            $url = $this->urlGenerator->generate('borrower_index');
+            $url = $this->urlGenerator->generate('loan_index');
         } elseif (in_array('ROLE_BORROWER', $user->getRoles())) {
             $borrower = $this->borrowerRepository->findOneByUser($user);
 

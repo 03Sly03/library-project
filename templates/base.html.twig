@@ -18,7 +18,7 @@
         {# NAVBAR #}
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="{{ path('app')}}">Bibliothèque</a>
+          <a class="navbar-brand" href="{{ path('admin_book_index')}}">Bibliothèque</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -26,7 +26,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="nav-link" href="{{ path('book_index')}}">Accueil <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{{ path('app')}}">Accueil <span class="sr-only">(current)</span></a>
               </li>
               {# liens pour les admins #}
               {% if is_granted('ROLE_ADMIN') %}
@@ -35,14 +35,14 @@
                   Administration
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{{ path('user_index')}}">Utilisateurs</a>
+                  <a class="dropdown-item" href="{{ path('admin_user_index')}}">Utilisateurs</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="{{ path('borrower_index')}}">Emprunteurs</a>
-                  <a class="dropdown-item" href="{{ path('loan_index')}}">Emprunts</a>
+                  <a class="dropdown-item" href="{{ path('admin_borrower_index')}}">Emprunteurs</a>
+                  <a class="dropdown-item" href="{{ path('admin_loan_index')}}">Emprunts</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="{{ path('book_index')}}">Livres</a>
-                  <a class="dropdown-item" href="{{ path('author_index')}}">Auteurs</a>
-                  <a class="dropdown-item" href="{{ path('type_index')}}">Genres</a>
+                  <a class="dropdown-item" href="{{ path('admin_book_index')}}">Livres</a>
+                  <a class="dropdown-item" href="{{ path('admin_author_index')}}">Auteurs</a>
+                  <a class="dropdown-item" href="{{ path('admin_type_index')}}">Genres</a>
                 </div>
               </li>
               {# <li class="nav-item">
@@ -60,9 +60,9 @@
               {% if app.user %}
               {% if is_granted('ROLE_BORROWER') %}
               <li class="nav-item active  mr-sm-2">
-                <a class="nav-link" href="{{ path('loan_index')}}">Voir mes emprunts<span class="sr-only">(current)</span></a>
-              </li>
+                <a class="nav-link" href="{{ path('borrower_show', {'id': borrower.id}) }}">Mon compte<span class="sr-only">(current)</span></a>
               {% endif %}
+              </li>
               <li class="nav-item my-2 my-sm-0">
                   <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
               </li>

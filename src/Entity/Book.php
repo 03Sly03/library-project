@@ -47,7 +47,7 @@ class Book
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity=Loan::class, mappedBy="book")
+     * @ORM\OneToMany(targetEntity=Loan::class, inversedBy="book")
      */
     private $loans;
 
@@ -192,14 +192,5 @@ class Book
         }
 
         return $this;
-    }
-
-    public function returnTypes(): string
-    {
-        foreach($this->getTypes() as $type) {
-            $theType = $type->getName();
-        }
-
-        return $theType;
     }
 }

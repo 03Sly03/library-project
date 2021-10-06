@@ -13,6 +13,7 @@ use App\Repository\BorrowerRepository;
 use App\Repository\LoanRepository;
 use App\Repository\TypeRepository;
 use App\Repository\UserRepository;
+use Faker\Factory as FakerFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,44 +32,7 @@ class TestController extends AbstractController
         UserRepository $userRepository): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        
-        // $someTypes = $typeRepository->findAll();
-        // dump($someTypes);
-        // foreach ($someTypes as $type) {
-        //     $types[] = $type;
-        // }
-        // dump($types);
-        // exit();
-        $borrower = $borrowerRepository->find(1);
-        dump($borrower);
-        $user = $borrower->getUser();
-        dump($user);
-        $borrower = $borrowerRepository->findOneByUser($user);
-        dump($borrower);
-        $loans = $borrower->getLoans();
-        dump($loans);
-        foreach($loans as $oneLoan){
-            $loanArray[] = $oneLoan;
-            dump($loanArray);
-        }
-        dump($loanArray);
-        // $loans = [$loan];
-        // dump($loans);
-        
-        $user = $this->getUser();
-        dump($user);
-        $borrower = $borrowerRepository->findOneByUser($user);
-        dump($borrower);
-        $loans = $borrower->getLoans();
-        dump($loans);
-        foreach($loans as $oneLoan){
-            $loan = $oneLoan;
-        }
-        dump($loan);
-        $borrower = $loan->getBorrower();
-        dump($borrower);
-        exit();
-        
+        $this->faker = FakerFactory::create('fr_FR');        
 
         // LES UTILISATEURS 
         // >>> Requêtes de lecture :
@@ -129,7 +93,7 @@ class TestController extends AbstractController
         $book->setTitle('Totum autem id externum');
         $book->setPublicationYear('2020');
         $book->setNumberOfPages('300');
-        $isbnC = '9790412882714';
+        $isbnC = $this->faker->numberBetween($min = 4589457823158, $max = 4589557823158);
         $book->setIsbnCode(strval($isbnC));
         $book->setAuthor($author);
         $book->addType($type);
@@ -159,9 +123,12 @@ class TestController extends AbstractController
 
         // Supprimer le livre dont l'id est `123`
         $book = $bookRepository->find(123);
-        $entityManager->remove($book);
-        $entityManager->flush();
-                       
+        dump($book);
+        if ($book != null) {
+            $entityManager->remove($book);
+            $entityManager->flush();
+        }
+        
 
         
         // LES EMPRUNTEURS
@@ -261,14 +228,18 @@ class TestController extends AbstractController
         $loan = $loanRepository->find(1);
         // Date de retour : 01/05/2020 à 10h00
         $loan->setReturnDate(\DateTime::createFromFormat('Y-m-d H:i:s', '2020-05-01 10:00:00'));
+        $entityManager->flush();
         dump($loan);
 
         // >>> Requêtes de suppression :
     
         // Supprimer l'emprunt dont l'id est `42`
         $loan = $loanRepository->find(42);
-        $entityManager->remove($loan);
-        $entityManager->flush();
+        if ($loan !=null) {
+            $entityManager->remove($loan);
+            $entityManager->flush();
+        }
+        dump($loan);
 
         exit();
     }

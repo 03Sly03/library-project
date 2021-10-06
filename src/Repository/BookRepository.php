@@ -15,9 +15,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class BookRepository extends ServiceEntityRepository
 {
-
-    use ProfileRepositoryTrait;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Book::class);
@@ -27,7 +24,7 @@ class BookRepository extends ServiceEntityRepository
      * @return Book[] Returns an array of Book objects
      */
 
-    public function findByTheTitle($value)
+    public function findByTheTitle(string $value)
     {
         $qb = $this->createQueryBuilder('b');
 
@@ -53,27 +50,5 @@ class BookRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-    }
-    
-    //     return $this->createQueryBuilder('b')
-    //         ->andWhere('b.theTitle = :val')
-    //         ->setParameter('val', {$value})
-    //         ->orderBy('b.title', 'ASC')
-    //         ->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
-    
-
-    /*
-    public function findOneBySomeField($value): ?Book
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+    }  
 }

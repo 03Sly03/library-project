@@ -3,7 +3,7 @@
 {% block title %}Book index{% endblock %}
 
 {% block body %}
-    <h1>Book index</h1>
+    <h1>LA BIBLIOTHÈQUE</h1>
 
     <table class="table">
         <thead>
@@ -27,13 +27,11 @@
             <tr>
                 <td>{{ book.id }}</td>
                 <td><a href="{{ path('book_show', {'id': book.id}) }}">{{ book.title }}</a></td>
-                <td>{{ book.author.firstname }} {{ book.author.firstname }}</td>
+                <td>{{ book.author.firstname }} {{ book.author.lastname }}</td>
 
                 {% for type in book.types %}
                     <td>{{ type.name }}</td>
                 {% endfor %}
-
-                    <td>{{ book.returnTypes }}</td>
 
                 <td>{{ book.publicationYear }}</td>
                 <td>{{ book.numberOfPages }}</td>
@@ -45,7 +43,7 @@
                     {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                 <td>
-                    <a href="{{ path('book_edit', {'id': book.id}) }}">edit</a>
+                    <a href="{{ path('admin_book_edit', {'id': book.id}) }}">edit</a>
                 </td>
                 {% endif %}
             </tr>
@@ -57,6 +55,6 @@
         </tbody>
     </table>
     {% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('book_new') }}">Create new</a>
+    <a href="{{ path('admin_book_new') }}">Create new</a>
     {% endif %}
 {% endblock %}

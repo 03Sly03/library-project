@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Borrower;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -26,7 +27,7 @@ class BorrowerRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('b')
             ->innerJoin('b.user', 'u')
-            ->andWhere('u.id LIKE :id')
+            ->andWhere('u.id = :id')
             ->setParameter('id', $id)
             ->orderBy('b.id', 'ASC')
             ->getQuery()

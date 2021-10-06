@@ -23,7 +23,7 @@
                 <td>
                     <a href="{{ path('type_show', {'id': type.id}) }}">show</a>
                     {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('type_edit', {'id': type.id}) }}">edit</a>
+                    <a href="{{ path('admin_type_edit', {'id': type.id}) }}">edit</a>
                     {% endif %}
                 </td>
             </tr>
@@ -35,6 +35,6 @@
         </tbody>
     </table>
     {% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('type_new') }}">Create new</a>
+    <a href="{{ path('admin_type_new') }}">Create new</a>
     {% endif %}
 {% endblock %}

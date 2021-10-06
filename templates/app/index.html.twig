@@ -5,15 +5,69 @@
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .example-wrapper code { padding: 2px 6px; }
 </style>
 
 <div class="example-wrapper">
 
-    <h1>Que voulez vous faire?</h1>
+    <h1>Bienvenue dans votre bibliothèque !</h1>
     <ul>
-        <li><code><a href="{{ path('book_index')}}">Accueil</a></code></li>
-        <li><code><a href="{{ path('app_login')}}">Se connecter</a></code></li>
+        <li><code><a href="{{ path('book_index')}}">ACCUEIL</a></code></li>
+        <li><code><a href="{{ path('app_login')}}">SE CONNECTER</a></code></li>
     </ul>
 </div>
+
+<h2>Liste des livres empruntables</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Type</th>
+            <th>Publication_year</th>
+            <th>Number_of_pages</th>
+            <th>Isbn_code</th>
+            <th>Availability</th>
+            {% if is_granted('ROLE_ADMIN') %}
+            <th>actions</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for book in books %}
+        <tr>
+            <td>{{ book.id }}</td>
+            <td><a href="{{ path('book_show', {'id': book.id}) }}">{{ book.title }}</a></td>
+            <td>{{ book.author.firstname }} {{ book.author.firstname }}</td>
+
+            {% for type in book.types %}
+                <td>{{ type.name }}</td>
+            {% endfor %}
+
+            <td>{{ book.publicationYear }}</td>
+            <td>{{ book.numberOfPages }}</td>
+            <td>{{ book.isbnCode }}</td>
+                {% if book.isAvailable %}
+                    <td>Le livre est disponible</td>
+                {% else %}
+                    <td>Le livre n'est pas disponible</td>
+                {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+            <td>
+                <a href="{{ path('admin_book_edit', {'id': book.id}) }}">edit</a>
+            </td>
+            {% endif %}
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="6">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if is_granted('ROLE_ADMIN') %}
+<a href="{{ path('admin_book_new') }}">Create new</a>
+{% endif %}
 {% endblock %}

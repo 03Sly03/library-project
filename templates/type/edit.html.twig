@@ -7,7 +7,7 @@
 
     {{ include('type/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('type_index') }}">back to list</a>
+    <a href="{{ path('admin_type_index') }}">back to list</a>
     {% if is_granted('ROLE_ADMIN') %}
     {{ include('type/_delete_form.html.twig') }}
     {% endif %}
